@@ -1,17 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Home from '../views/Home.vue';
-import Room from '../views/Room.vue';
+
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name:'Home',
-    component: Home,
+    component: ()=>import('../views/Home.vue'),
   },
   {
     path: '/room/:id', // Dynamic route parameter ":id"
     name: "Room",
-    component: Room,
+    component: ()=>import('../views/Room.vue'),
     props: true,
   },
 ];
