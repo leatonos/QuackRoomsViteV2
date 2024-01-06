@@ -17,9 +17,49 @@ h1{
 .side_pannel-container{
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: brown;
   width: 20%;
-  height: 100vh;;
+  height: 100vh;
+}
+
+.duck_portrait-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 120px;
+  margin-top: 20px;
+  background-color: white;
+}
+
+.duck_list-container{
+  display: flexbox;
+  flex-direction: column;
+  padding: 0px 10px;
+  width: 80%;
+  height: 320px;
+  margin-top: 10px;
+  background-color: yellow;
+  overflow-y: auto;
+}
+
+.duck_list-item{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 60px;
+  margin: 10px 0px;
+  background-color: blue;
+
+}
+
+.side_alerts-container{
+  width: 90%;
+  height: 60px;
+  margin-top: 20px;
+  background-color: white;
 }
 
 .chat-container{

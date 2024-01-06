@@ -1,12 +1,32 @@
  <template>
   <main class="room-container">
     <aside class="side_pannel-container">
-      
+      <div class="duck_portrait-container">
+        <DuckPortrait />
+        <h1></h1>
+        <form>
+          <input type="text" name="" id="">
+          <input type="color">
+        </form>
+      </div>
+      <div class="duck_list-container">
+        <div class="duck_list-item"></div>
+        <div class="duck_list-item"></div>
+        <div class="duck_list-item"></div>
+        <div class="duck_list-item"></div>
+        <div class="duck_list-item"></div>
+        <div class="duck_list-item"></div>
+        <div class="duck_list-item"></div>
+        <div class="duck_list-item"></div>
+      </div>
+      <div class="side_alerts-container">
+
+      </div>
     </aside>
     <section class="chat-container">
       <div class="title-container">
-      <h1>Room Id: {{ $route.params.id }}</h1>
-      <p>User: {{ userId }}</p>
+        <h1>Room Id: {{ $route.params.id }}</h1>
+        <p>User: {{ userId }}</p>
       </div>
     <div class="message_log-container">
       <div v-for="(value, index) in messageArray" :key="index"> 
@@ -20,6 +40,7 @@
     <div class="message_sender-container">
         <form class="message_form" action="">
           <input class="message-input" type="text" ref="messageInput"/>
+          <button class="message-btn" @click="quackSound" type="button">Quack</button>
           <button class="message-btn" @click="sendMessage" type="submit">Send Message</button>
         </form>
     </div>
@@ -31,9 +52,12 @@
 
 <script lang="ts">
 
+import { Howl } from 'howler';
 import { defineComponent } from 'vue';
 import { RouteLocationNormalizedLoaded } from 'vue-router';
 import Message from '../components/Message.vue';
+import DuckPortrait from '../components/DuckPortrait.vue';
+
   
   export default defineComponent({
     components:{
@@ -67,8 +91,8 @@ import Message from '../components/Message.vue';
         }
 
         // Establish a new WebSocket connection
-        //this.socket = new WebSocket(`ws://python-web-seocket-41c1df161133.herokuapp.com/`);
-        this.socket = new WebSocket('ws://localhost:8765')
+        this.socket = new WebSocket(`ws://python-web-seocket-41c1df161133.herokuapp.com/`);
+        //this.socket = new WebSocket('ws://localhost:8765')
         // WebSocket event listeners (you can add your own)
         this.socket.onopen = () => {
           console.log('WebSocket connection established');
@@ -136,6 +160,13 @@ import Message from '../components/Message.vue';
     },
     newMessage(messageData:any){
       this.messageArray.push(messageData)
+    },
+    quackSound() {
+      const sound = new Howl({
+        src: ['/quack-sound-1.mp3'] // Replace with the path to your sound file
+      });
+      
+      sound.play(); // Play the sound
     }
   },
 });

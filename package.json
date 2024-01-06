@@ -9,11 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "howler": "^2.2.4",
     "uuid": "^9.0.1",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "@types/howler": "^2.2.11",
     "@vitejs/plugin-vue": "^4.5.2",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
