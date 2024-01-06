@@ -6,6 +6,7 @@
     <section class="chat-container">
       <div class="title-container">
       <h1>Room Id: {{ $route.params.id }}</h1>
+      <p>User: {{ userId }}</p>
       </div>
     <div class="message_log-container">
       <div v-for="(value, index) in messageArray" :key="index"> 
@@ -42,7 +43,8 @@ import Message from '../components/Message.vue';
     return {
       routeId: null as string | string[] | null,
       socket: null as WebSocket | null,
-      messageArray: [] as any[]
+      messageArray: [] as any[],
+      userId:crypto.randomUUID()
     };
   },
   created() {
@@ -65,8 +67,8 @@ import Message from '../components/Message.vue';
         }
 
         // Establish a new WebSocket connection
-        this.socket = new WebSocket(`ws://localhost:8765`);
-        
+        //this.socket = new WebSocket(`ws://python-web-seocket-41c1df161133.herokuapp.com/`);
+        this.socket = new WebSocket('ws://localhost:8765')
         // WebSocket event listeners (you can add your own)
         this.socket.onopen = () => {
           console.log('WebSocket connection established');
@@ -78,7 +80,7 @@ import Message from '../components/Message.vue';
           console.log('Received message:', event.data);
           // Handle incoming WebSocket messages
           const eventData = JSON.parse(event.data)
-          if(eventData.actionType == 'MessageToRoom'){
+          if(eventData.action_type == 'MessageToRoom'){
             this.newMessage(eventData)
           }
         };
@@ -101,7 +103,17 @@ import Message from '../components/Message.vue';
       }
     },
     joinRoom(){
-      this.socket?.send(`JOIN:${this.routeId}`)
+
+      const messageInfo = {
+        action_type:"JoinRoom",
+        room_id:this.routeId,
+        sender_id:this.userId,
+        sender:"Pedro",
+        color:'Yellow',
+        message: "New duck in the room"
+      }
+
+      this.socket?.send(JSON.stringify(messageInfo))
     },
     sendMessage(e:Event){
       
@@ -111,8 +123,9 @@ import Message from '../components/Message.vue';
       const messageToSend = inputMessage.value
 
       const messageInfo = {
-        actionType:"MessageToRoom",
-        roomId:this.routeId,
+        action_type:"MessageToRoom",
+        room_id:this.routeId,
+        sender_id:this.userId,
         sender:"Pedro",
         color:'Yellow',
         message: messageToSend
