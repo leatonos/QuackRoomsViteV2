@@ -2,25 +2,24 @@
   <main class="room-container">
     <aside class="side_pannel-container">
       <div class="duck_portrait-container">
-        <DuckPortrait />
-        <h1></h1>
-        <form>
-          <input type="text" name="" id="">
-          <input type="color">
-        </form>
+        <DuckPortrait  :color="selectedColor" />
+        <label for="text-input">Duck name:</label>
+        <input id="text-input" type="text" v-model="duckName" @blur="updateDuck"/>
+        <label for="color-input">Duck Color:</label>
+        <input id="color-input" type="color" v-model="selectedColor" @blur="updateDuck"/>
       </div>
       <div class="duck_list-container">
-        <div class="duck_list-item"></div>
-        <div class="duck_list-item"></div>
-        <div class="duck_list-item"></div>
-        <div class="duck_list-item"></div>
-        <div class="duck_list-item"></div>
-        <div class="duck_list-item"></div>
-        <div class="duck_list-item"></div>
-        <div class="duck_list-item"></div>
+        <div v-for="(value, index) in duckList" :key="index"> 
+          <div class="duck_list-item">
+            <div class="mini_duck_portrait-container">
+              <DuckPortrait  :color="value.color" />
+            </div>
+            <p>{{ value.duck_name }}</p>
+          </div>
+        </div>
       </div>
       <div class="side_alerts-container">
-
+        <p>{{ duckList }}</p>
       </div>
     </aside>
     <section class="chat-container">
@@ -30,7 +29,7 @@
       </div>
     <div class="message_log-container">
       <div v-for="(value, index) in messageArray" :key="index"> 
-        <Message 
+        <MessageBox 
           :message="value.message"
           :user="value.sender"
           :color="value.color" 
@@ -39,7 +38,7 @@
     </div>
     <div class="message_sender-container">
         <form class="message_form" action="">
-          <input class="message-input" type="text" ref="messageInput"/>
+          <input class="message-input" type="text" ref="messageInput" />
           <button class="message-btn" @click="quackSound" type="button">Quack</button>
           <button class="message-btn" @click="sendMessage" type="submit">Send Message</button>
         </form>
@@ -55,21 +54,26 @@
 import { Howl } from 'howler';
 import { defineComponent } from 'vue';
 import { RouteLocationNormalizedLoaded } from 'vue-router';
-import Message from '../components/Message.vue';
+import MessageBox from '../components/Message.vue';
 import DuckPortrait from '../components/DuckPortrait.vue';
+import { Duck, QuackRoom, Message } from '../types/'
 
   
   export default defineComponent({
     components:{
-      Message
+      MessageBox,
+      DuckPortrait
     },
     data() {
-    return {
-      routeId: null as string | string[] | null,
-      socket: null as WebSocket | null,
-      messageArray: [] as any[],
-      userId:crypto.randomUUID()
-    };
+      return {
+        routeId: null as string | string[] | null,
+        socket: null as WebSocket | null,
+        messageArray: [] as any[],
+        userId:crypto.randomUUID(),
+        duckName:"Duck" as string,
+        selectedColor: '#e9ff70' as string,
+        duckList:[] as Duck[]
+      };
   },
   created() {
     // Accessing route parameter in the script
@@ -91,8 +95,8 @@ import DuckPortrait from '../components/DuckPortrait.vue';
         }
 
         // Establish a new WebSocket connection
-        this.socket = new WebSocket(`ws://python-web-seocket-41c1df161133.herokuapp.com/`);
-        //this.socket = new WebSocket('ws://localhost:8765')
+        //this.socket = new WebSocket(`ws://python-web-seocket-41c1df161133.herokuapp.com/`);
+        this.socket = new WebSocket('ws://localhost:8765')
         // WebSocket event listeners (you can add your own)
         this.socket.onopen = () => {
           console.log('WebSocket connection established');
@@ -103,10 +107,20 @@ import DuckPortrait from '../components/DuckPortrait.vue';
         this.socket.onmessage = (event) => {
           console.log('Received message:', event.data);
           // Handle incoming WebSocket messages
-          const eventData = JSON.parse(event.data)
-          if(eventData.action_type == 'MessageToRoom'){
-            this.newMessage(eventData)
+          const eventData:Message = JSON.parse(event.data)
+
+          switch(eventData.action_type) {
+            case 'MessageToRoom':
+              this.newMessage(eventData)
+              break;
+            case 'RoomUpdate':
+              const updatedRoom = eventData.message as QuackRoom
+              this.roomUpdate(updatedRoom)
+              break;
+            default:
+              // code block
           }
+
         };
 
         this.socket.onclose = () => {
@@ -167,6 +181,26 @@ import DuckPortrait from '../components/DuckPortrait.vue';
       });
       
       sound.play(); // Play the sound
+    },
+    updateDuck(){
+      //Send this information to mongoDB
+
+      const messageInfo = {
+        action_type:"UpdateDuck",
+        room_id:this.routeId,
+        sender_id:this.userId,
+        sender:this.duckName,
+        color:this.selectedColor,
+        message: `Duck ${this.userId} is updating...`
+      }
+      
+      this.socket?.send(JSON.stringify(messageInfo))
+
+    },
+    roomUpdate(room:QuackRoom){
+      this.duckList = room.ducks
+      console.log('Room updated')
+      console.log(room.ducks)
     }
   },
 });
