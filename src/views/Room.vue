@@ -39,7 +39,7 @@
     <div class="message_sender-container">
         <form class="message_form" action="">
           <input class="message-input" type="text" ref="messageInput" />
-          <button class="message-btn" @click="quackSound" type="button">Quack</button>
+          <button class="message-btn" @click="sendQuack" type="button">Quack</button>
           <button class="message-btn" @click="sendMessage" type="submit">Send Message</button>
         </form>
     </div>
@@ -117,8 +117,12 @@ import { Duck, QuackRoom, Message } from '../types/'
               const updatedRoom = eventData.message as QuackRoom
               this.roomUpdate(updatedRoom)
               break;
+            case 'QuackToRoom':
+              this.newMessage(eventData)
+              this.quackSound()
+              break;
             default:
-              // code block
+              console.log(eventData)
           }
 
         };
@@ -146,8 +150,8 @@ import { Duck, QuackRoom, Message } from '../types/'
         action_type:"JoinRoom",
         room_id:this.routeId,
         sender_id:this.userId,
-        sender:"Pedro",
-        color:'Yellow',
+        sender:this.duckName,
+        color:this.selectedColor,
         message: "New duck in the room"
       }
 
@@ -164,13 +168,25 @@ import { Duck, QuackRoom, Message } from '../types/'
         action_type:"MessageToRoom",
         room_id:this.routeId,
         sender_id:this.userId,
-        sender:"Pedro",
-        color:'Yellow',
+        sender:this.duckName,
+        color:this.selectedColor,
         message: messageToSend
       }
 
       this.socket?.send(JSON.stringify(messageInfo))
       inputMessage.value = ''
+    },
+    sendQuack(){
+      const messageInfo = {
+        action_type:"QuackToRoom",
+        room_id:this.routeId,
+        sender_id:this.userId,
+        sender:this.duckName,
+        color:this.selectedColor,
+        message: 'Quack!'
+      }
+
+      this.socket?.send(JSON.stringify(messageInfo))
     },
     newMessage(messageData:any){
       this.messageArray.push(messageData)
