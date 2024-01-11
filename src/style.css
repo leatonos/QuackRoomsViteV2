@@ -1,11 +1,57 @@
+:root {
+  --blue: #70d6ff;
+  --pink: #ff70a6;
+  --orangea: #ff9770;
+  --orangeb: #ffd670;
+  --yellow: #e9ff70;
+  --main_font:MyQuicksand;
+}
+
 body{
   margin: 0;
   padding: 0;
+  overflow-y: hidden;
 }
 h1{
   margin: 0;
   text-align: center;
 }
+
+/* Lobby  */
+
+.main-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--blue);
+  width: 100vw;
+  height: 100vh;
+}
+
+.home_page-container{
+  width: 60%;
+  height: 75vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.room_list-container{
+  max-width: 850px;
+  max-height: 320px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.room_list{
+  margin-top: 30px;
+  max-height: 20px;
+}
+
+/* Room  */
 
 .room-container{
   display: flex;
@@ -124,4 +170,112 @@ h1{
   width: 15%;
 }
 
+/* Modal */
 
+.modal-background{
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, .4);
+  z-index: 998;
+}
+
+.modal-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 600px;
+  min-height: 350px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Fonts  */
+@font-face {
+  font-family: 'MyQuicksand';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400&display=swap');
+}
+
+/* Apply the font-family to elements */
+body {
+  font-family: 'MyQuicksand', sans-serif;
+}
+
+
+/* Form */
+form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Style form controls */
+.form_control {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"] {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+/* Style buttons */
+.nice-button {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* Style header */
+header {
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* Add some spacing to the header */
+h2 {
+  margin: 0;
+}
+
+/* Style the options container */
+.options {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Add some spacing between buttons */
+.nice-button + .nice-button {
+  margin-left: 5px;
+}
+
+.inline-label {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* Add some spacing between label and checkbox */
+.label + input[type="checkbox"] {
+  margin-left: 10px;
+}

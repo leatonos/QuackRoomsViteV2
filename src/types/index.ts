@@ -6,6 +6,7 @@ interface Duck {
   
   // QuackRoom type
   interface QuackRoom {
+    _id?:string
     limit: number;
     room_id: string;
     room_name: string;
@@ -20,7 +21,7 @@ interface Duck {
     sender_id: string;
     sender: string;
     color: string;
-    message: string | QuackRoom;
+    message: string | QuackRoom | QuackRoom[];
   }
 
   export type { Duck, QuackRoom, Message };
