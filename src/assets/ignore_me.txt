@@ -19,6 +19,8 @@ interface Duck {
 }
 
 export default defineComponent({
+
+  /*
   setup() {
     const canvas = ref<HTMLCanvasElement | null>(null);
 
@@ -92,6 +94,7 @@ export default defineComponent({
       canvas,
     };
   },
+  */
 });
 </script>
 

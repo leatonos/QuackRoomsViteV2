@@ -71,12 +71,11 @@
   <script lang="ts">
     import { defineComponent } from 'vue';
     import { Message, QuackRoom } from '../types';
-import DuckBackgroundAnimation from '../components/DuckBackgroundAnimation.vue';
-import router from '../router';
+    import router from '../router';
     
     export default defineComponent({
     components: {
-    DuckBackgroundAnimation
+    
 },
     data() {
       return {
