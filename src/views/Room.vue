@@ -1,4 +1,23 @@
  <template>
+
+    <div class="modal-background" v-if="passwordRequired">
+      <div class="modal-container">
+        <header>
+          <h2>This room requires a password</h2>
+        </header>
+        <form @submit="tryPassword">
+          <div class="form_control">
+            <label for="room_password" class="regular-label">Room password</label>
+            <input id="room_password" v-model="password" type="password" required/>
+          </div>
+          <div class="options">
+            <button @click="tryPassword" type="submit" class="nice-button">Submit</button>
+            <button @click="goBack" type="button" class="nice-button">Go Back</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
   <main class="room-container">
     <aside class="side_pannel-container">
       <div class="duck_portrait-container">
@@ -57,6 +76,7 @@ import { RouteLocationNormalizedLoaded } from 'vue-router';
 import MessageBox from '../components/Message.vue';
 import DuckPortrait from '../components/DuckPortrait.vue';
 import { Duck, QuackRoom, Message } from '../types/'
+import router from '../router';
 
   
   export default defineComponent({
@@ -73,7 +93,9 @@ import { Duck, QuackRoom, Message } from '../types/'
           duckName:"Duck" as string,
           selectedColor: '#e9ff70' as string,
           duckList:[] as Duck[],
-          roomStatus: "Connecting to server..." as string
+          roomStatus: "Connecting to server..." as string,
+          passwordRequired: false as boolean,
+          password: '' as string
         };
     },
     created() {
@@ -117,6 +139,21 @@ import { Duck, QuackRoom, Message } from '../types/'
               case 'RoomUpdate':
                 const updatedRoom = eventData.message as QuackRoom
                 this.roomUpdate(updatedRoom)
+                this.passwordRequired = false
+                break;
+              case 'RoomFull':
+                console.log("Room Full");
+                this.roomStatus = "Room Full"
+                router.push('/')
+                break;
+              case 'PasswordRequired':
+                console.log("Room Requires password");
+                this.roomStatus = "Password Required"
+                this.passwordRequired = true
+                break;
+              case 'WrongPassword':
+                console.log("Wrong Password try again");
+                this.roomStatus = "Password Required"
                 break;
               case 'QuackToRoom':
                 this.newMessage(eventData)
@@ -158,10 +195,25 @@ import { Duck, QuackRoom, Message } from '../types/'
           sender_id:this.userId,
           sender:this.duckName,
           color:this.selectedColor,
-          message: "New duck in the room"
+          message: "New duck trying to enter this room"
         }
 
         this.socket?.send(JSON.stringify(messageInfo))
+      },
+      tryPassword(e:Event){
+
+        e.preventDefault()
+
+        const passwordMessage:Message = {
+            action_type: 'RoomPasswordAttempt',
+            room_id: this.routeId as string,
+            sender_id: this.userId,
+            sender: this.duckName,
+            color: this.selectedColor,
+            message: this.password
+          }
+
+        this.socket?.send(JSON.stringify(passwordMessage))
       },
       sendMessage(e:Event){
         
@@ -225,6 +277,9 @@ import { Duck, QuackRoom, Message } from '../types/'
         this.duckList = room.ducks
         console.log('Room updated')
         console.log(room.ducks)
+      },
+      goBack(){
+        router.push('/')
       }
   },
 });
