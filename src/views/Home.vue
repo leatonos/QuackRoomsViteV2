@@ -94,7 +94,7 @@
     },
     methods: {
       handleLobbyWebSocket(){
-        this.socket = new WebSocket('ws://python-web-seocket-41c1df161133.herokuapp.com/')
+        this.socket = new WebSocket('wss://python-web-seocket-41c1df161133.herokuapp.com/')
         //this.socket = new WebSocket('ws://localhost:8765')
 
         this.socket.onopen = () => {

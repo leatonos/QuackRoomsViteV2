@@ -118,7 +118,7 @@ import router from '../router';
           }
 
           // Establish a new WebSocket connection
-          this.socket = new WebSocket(`ws://python-web-seocket-41c1df161133.herokuapp.com/`);
+          this.socket = new WebSocket(`wss://python-web-seocket-41c1df161133.herokuapp.com/`);
           //this.socket = new WebSocket('ws://localhost:8765')
           // WebSocket event listeners (you can add your own)
           this.socket.onopen = () => {
