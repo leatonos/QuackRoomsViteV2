@@ -35,7 +35,7 @@ export default defineComponent({
 
 <style scoped>
     .message-container{
-        background-color: blue;
+        background-color: white;
         margin: 15px 0px;
         width: calc(100% - 30px);
         border-radius: 5px;

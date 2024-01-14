@@ -20,12 +20,16 @@
 
   <main class="room-container">
     <aside class="side_pannel-container">
-      <div class="duck_portrait-container">
-        <DuckPortrait  :color="selectedColor" />
-        <label for="text-input">Duck name:</label>
-        <input id="text-input" type="text" v-model="duckName" @blur="updateDuck"/>
-        <label for="color-input">Duck Color:</label>
-        <input id="color-input" type="color" v-model="selectedColor" @blur="updateDuck"/>
+      <div class="duck_profile-container">
+        <div class="duck_portrait-container">
+          <DuckPortrait  :color="selectedColor" />
+        </div>
+        <div class="duck-customization">
+          <label for="text-input">Duck name:</label>
+          <input id="text-input" type="text" v-model="duckName" @blur="updateDuck"/>
+          <label for="color-input">Duck Color:</label>
+          <input id="color-input" type="color" v-model="selectedColor" @blur="updateDuck"/>
+        </div>
       </div>
       <div class="duck_list-container">
         <div v-for="(value, index) in duckList" :key="index"> 
@@ -42,10 +46,6 @@
       </div>
     </aside>
     <section class="chat-container">
-      <div class="title-container">
-        <h1>Room Id: {{ $route.params.id }}</h1>
-        <p>User: {{ userId }}</p>
-      </div>
     <div class="message_log-container">
       <div v-for="(value, index) in messageArray" :key="index"> 
         <MessageBox 
@@ -58,16 +58,18 @@
     <div class="message_sender-container">
         <form class="message_form" action="">
           <input class="message-input" type="text" ref="messageInput" />
-          <button class="message-btn" @click="sendQuack" type="button">Quack</button>
-          <button class="message-btn" @click="sendMessage" type="submit">Send Message</button>
+          <button class="message-btn" @click="sendQuack" type="button">
+            <img src="../../public/quack-01.svg" />
+          </button>
+          <button class="message-btn" @click="sendMessage" type="submit">
+            <img src="../../public/message.svg" />
+          </button>
         </form>
     </div>
-    </section>
-   
+    </section> 
   </main> 
   </template>
   
-
 <script lang="ts">
 
 import { Howl } from 'howler';
@@ -120,7 +122,7 @@ import router from '../router';
           // Establish a new WebSocket connection
           this.socket = new WebSocket(`wss://python-web-seocket-41c1df161133.herokuapp.com/`);
           //this.socket = new WebSocket('ws://localhost:8765')
-          // WebSocket event listeners (you can add your own)
+          // WebSocket event listeners
           this.socket.onopen = () => {
             console.log('WebSocket connection established');
             console.log(`Joining Room: ${this.routeId}`)

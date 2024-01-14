@@ -1,9 +1,10 @@
 :root {
-  --blue: #70d6ff;
+  --primary: #70d6ff;
   --pink: #ff70a6;
-  --orangea: #ff9770;
+  --secondary: #ff9770;
   --orangeb: #ffd670;
   --yellow: #e9ff70;
+  --third: white;
   --main_font:MyQuicksand;
 }
 
@@ -24,7 +25,7 @@ h1{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: var(--blue);
+  background-color: var(--primary);
   width: 100vw;
   height: 100vh;
 }
@@ -64,33 +65,47 @@ h1{
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: brown;
-  width: 20%;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--secondary);
+  width: 33%;
   height: 100vh;
+}
+
+.duck_profile-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  padding: 10px;
+  height: calc(20vh - 30px);
+  background-color: white;
+}
+
+.duck-customization{
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  padding: 0 20px;
 }
 
 .duck_portrait-container{
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
   justify-content: center;
-  width: 60%;
-  padding: 10px;
-  height: 180px;
-  margin-top: 20px;
-  background-color: white;
-}
-
-.mini_duck_portrait-container{
-  width: 45px;
+  width: 40%;
 }
 
 .duck_portrait{
   display: flex;
   flex-direction: row;
   justify-content: center;
-  width: 80%;
-  padding: 5px;
+  width: 100%;
+}
+
+.mini_duck_portrait-container{
+  width: 45px;
 }
 
 .main-duck-img{
@@ -102,9 +117,9 @@ h1{
   flex-direction: column;
   padding: 0px 10px;
   width: 80%;
-  height: 250px;
+  height: calc(70vh - 30px);
   margin-top: 10px;
-  background-color: yellow;
+  background-color: var(--third);
   overflow-y: auto;
 }
 
@@ -114,16 +129,18 @@ h1{
   width: 100%;
   height: 50px;
   margin: 10px 0px;
-  background-color: blue;
+  background-color: primary;
 
 }
 
 .side_alerts-container{
-  width: 90%;
-  height: 60px;
-  margin-top: 20px;
-  background-color: white;
+  width: 80%;
+  height: calc(10vh - 30px);
+  padding: 0px 10px;
+  margin-top: 10px;
+  background-color: var(--third);
 }
+
 
 .chat-container{
   display: flex;
@@ -133,6 +150,7 @@ h1{
   width: 80%;
   height: 100vh;
 }
+
 .title-container{
   display: flex;
   flex-direction: column;
@@ -141,33 +159,36 @@ h1{
   width: 100%;
   height: 10%;
 }
+
 .message_log-container{
-  max-width: 750px;
-  width: 100%;
-  height: 70%;
+  width: calc(100% - 30px);
+  height: 90%;
   padding: 15px;
-  background-color: yellow;
+  background-color: var(--primary);
   overflow-y: auto;
 }
 .message_sender-container{
-  max-width: 750px;
   width: 100%;
-  padding: 5px 15px ;
-  background-color: green;
+  height: 10%;
+  padding: 0px 0px ;
+  background-color: white;
 }
-
 .message_form{
   display: flex;
-  flex-direction: row;
-  justify-content: center; 
-  width: 100%;
+  justify-items: start;
+  width: 100% !important;
+  max-width:none;
 }
 
 .message-input{
-  width: 75%;
+  width: 80%;
 }
 .message-btn{
-  width: 15%;
+  width: 10%;
+  max-width: 60px;
+  appearance: none;
+  background-color: white;
+  border-style: none;
 }
 
 /* Modal */
@@ -236,6 +257,29 @@ input[type="password"] {
   box-sizing: border-box;
 }
 
+input[type="color" i] {
+  border-radius: 50%;
+  inline-size: 3em;
+  block-size: 3em;
+  padding: 3px;
+  background-color: white;
+  border-width: 0px;
+}
+
+/* Affects area between outer circle and color swatch. Firefox doesn't have an equivalent. */
+input[type="color" i]::-webkit-color-swatch-wrapper {
+  padding: 1px;
+}
+
+/* Affects the inner circle, i.e. the current color selection */
+input[type="color" i]::-webkit-color-swatch {
+  border-radius: 50%;
+}
+
+input[type="color" i]::-moz-color-swatch {
+  border-radius: 50%;
+}
+
 /* Style buttons */
 .nice-button {
   background-color: #3498db;
@@ -278,4 +322,102 @@ h2 {
 /* Add some spacing between label and checkbox */
 .label + input[type="checkbox"] {
   margin-left: 10px;
+}
+
+
+/* Large computers and larger screens */
+@media only screen and (min-width: 1200px) {
+  .side_pannel-container{
+    max-width: 450px;
+  }
+}
+
+/* Computers and larger screens */
+@media only screen and (min-width: 1024px) {
+  
+}
+
+
+/* Tablets and larger screens */
+@media only screen and (max-width: 1023px) {
+
+  .home_page-container{
+    width: 85%;
+    height: 85vh;
+  }
+
+  .room-container{
+    flex-direction: column;
+  }
+  .side_pannel-container{
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    background-color: white;
+  }
+  .duck_profile-container{
+    height: 130px;
+    padding: 0px;
+    margin: 0px;
+  }
+  .duck_list-container{
+    height: 130px;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .side_alerts-container{
+    height: 130px;
+    margin: 0;
+    text-align: center;
+  }
+
+  .chat-container{
+    width: 100%;
+  }
+}
+
+
+/* Mobile phones */
+@media only screen and (max-width: 599px) {
+
+  .side_pannel-container{
+    flex-wrap: wrap;
+    background-color: var(--third);
+  }
+  .duck_profile-container{
+    width: 60%;
+  }
+  .duck_list-container{
+    width: 40%;
+  }
+  .side_alerts-container{
+    width: 100%;
+  }
+
+  .chat-container{
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .side_alerts-container{
+    display: none;
+  }
+
+  .message_form{
+    height: 35px;
+    width: calc(100% - 10px);
+    padding: 5px;
+  }
+
+  .title-container{
+    height: 35px;
+  }
+  .message_log-container{
+    padding: 0px 15px;
+    width: calc(100% - 30px);
+    height: 100%;
+  }
 }
