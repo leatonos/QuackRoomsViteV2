@@ -46,7 +46,7 @@
       </div>
     </aside>
     <section class="chat-container">
-    <div class="message_log-container">
+    <div class="message_log-container" ref="messageLog">
       <div v-for="(value, index) in messageArray" :key="index"> 
         <MessageBox 
           :message="value.message"
@@ -133,6 +133,8 @@ import router from '../router';
             console.log('Received message:', event.data);
             // Handle incoming WebSocket messages
             const eventData:Message = JSON.parse(event.data)
+            
+            
 
             switch(eventData.action_type) {
               case 'MessageToRoom':
@@ -170,6 +172,7 @@ import router from '../router';
           this.socket.onclose = () => {
             console.log('WebSocket connection closed');
             this.roomStatus = "Disconnected"
+            
             // Add your logic when the WebSocket connection is closed
           };
 
@@ -250,6 +253,12 @@ import router from '../router';
       },
       newMessage(messageData:any){
         this.messageArray.push(messageData)
+        const messageContainer = this.$refs.messageLog as HTMLDivElement
+        this.$nextTick(() => {
+        // Set scrollTop to the maximum scroll height after the next DOM update
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+      });
+
       },
       quackSound() {
         const sound = new Howl({
