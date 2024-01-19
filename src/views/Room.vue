@@ -105,6 +105,14 @@ import router from '../router';
       const route = this.$route as RouteLocationNormalizedLoaded;
       this.routeId = route.params.id || null;
       this.handleWebSocket();
+
+      // Make sure that you will disconnect from the room even when you navigate to other pages
+      window.addEventListener('beforeunload', this.closeWebSocket);
+
+    },
+    mounted(){
+      // Make sure that you will disconnect from the room even when you navigate to other pages
+      window.addEventListener('beforeunload', this.closeWebSocket);
     },
     watch: {
       '$route.params.id'(newId: string | null) {
@@ -120,8 +128,8 @@ import router from '../router';
           }
 
           // Establish a new WebSocket connection
-          this.socket = new WebSocket(`wss://python-web-seocket-41c1df161133.herokuapp.com/`);
-          //this.socket = new WebSocket('ws://localhost:8765')
+          //this.socket = new WebSocket(`wss://python-web-seocket-41c1df161133.herokuapp.com/`);
+          this.socket = new WebSocket('ws://localhost:8765')
           // WebSocket event listeners
           this.socket.onopen = () => {
             console.log('WebSocket connection established');
@@ -172,12 +180,13 @@ import router from '../router';
           this.socket.onclose = () => {
             console.log('WebSocket connection closed');
             this.roomStatus = "Disconnected"
-            
+            this.socket?.close();
             // Add your logic when the WebSocket connection is closed
           };
 
           this.socket.onerror = (error) => {
             console.error('WebSocket error:', error);
+            this.socket?.close();
             this.roomStatus = `Server error: ${error}`
             // Handle WebSocket errors
           };
@@ -291,7 +300,13 @@ import router from '../router';
       },
       goBack(){
         router.push('/')
+      },
+      closeWebSocket() {
+      // Close the WebSocket connection before leaving the page
+      if (this.socket) {
+        this.socket?.close();
       }
+    },
   },
 });
 

@@ -7,11 +7,11 @@
         <form @submit="createRoom">
           <div class="form_control">
             <label for="room_name" class="regular-label">Room name </label>
-            <input id="room_name" v-model="newRoomName" type="text" required/>
+            <input id="room_name" v-model="newRoomName" type="text" required />
           </div>
           <div class="form_control">
             <label for="room_limit" class="regular-label">Room limit </label>
-            <input id="room_limit" v-model="newRoomLimit" type="number" required/>
+            <input id="room_limit" v-model="newRoomLimit" max="25" min="1" type="number" required />
           </div>
           <div class="form_control" v-if="isPrivate">
             <label for="password" class="regular-label">Password </label>
@@ -94,8 +94,8 @@
     },
     methods: {
       handleLobbyWebSocket(){
-        this.socket = new WebSocket('wss://python-web-seocket-41c1df161133.herokuapp.com/')
-        //this.socket = new WebSocket('ws://localhost:8765')
+        //this.socket = new WebSocket('wss://python-web-seocket-41c1df161133.herokuapp.com/')
+        this.socket = new WebSocket('ws://localhost:8765')
 
         this.socket.onopen = () => {
             console.log('WebSocket connection established');
@@ -136,6 +136,9 @@
 
       },
       joinLobby(){
+
+        console.log('Joining Lobby')
+
         const joinRequest: Message = {
           action_type: 'JoinLobby',
           room_id: '',
@@ -156,8 +159,36 @@
       createRoom(e:Event){
         e.preventDefault()
 
+        function isStringValid(inputString:string) {
+          // Check if the input is a string
+          if (typeof inputString !== 'string') {
+            return false;
+          }
+
+          // Trim the string to remove leading and trailing spaces
+          const trimmedString = inputString.trim();
+
+          // Check if the trimmed string is not empty
+          if (trimmedString.length === 0) {
+            return false;
+          }
+
+          // Check if the trimmed string contains characters (not just spaces)
+          const hasCharacters = /[a-zA-Z]/.test(trimmedString);
+          
+          return hasCharacters;
+        }
+
+       if (!isStringValid(this.newRoomName)){
+        return
+       }
+
+       this.newRoomLimit = Math.max(1, Math.min(this.newRoomLimit, 25));
+
+
         const newRoom:QuackRoom = {
             limit: this.newRoomLimit,
+            _id:'',
             room_id: '',
             room_name: this.newRoomName,
             password: this.newRoomPassword,
