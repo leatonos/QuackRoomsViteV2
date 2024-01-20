@@ -26,13 +26,26 @@ h1{
   align-items: center;
   justify-content: center;
   background-color: var(--primary);
-  background: url('../public/pattern-1.svg') repeat;
+  background: url('/pattern-1.svg') repeat;
   animation: diagonalMove 45s linear infinite;
+  -webkit-animation: diagonalMove 45s infinite; /* Safari and Chrome */
   width: 100vw;
   height: 100vh;
 }
 
 @keyframes diagonalMove {
+  0% {
+    background-position: 0% 0%;
+  }
+  50%{
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@-webkit-keyframes diagonalMove {
   0% {
     background-position: 0% 0%;
   }
@@ -402,7 +415,7 @@ h2 {
   .side_pannel-container{
     flex-wrap: wrap;
     background-color: var(--third);
-    height: 20vh;
+    height: 150px;
   }
   .duck_profile-container{
     width: 60%;
@@ -425,7 +438,7 @@ h2 {
   .message_log-container{
     padding: 0px 15px;
     width: calc(100% - 30px);
-    height: calc(100% - 105px);
+    height: calc(100vh - 185px);
   }
 
   .message_sender-container{
