@@ -27,7 +27,7 @@ h1{
   justify-content: center;
   background-color: var(--primary);
   background: url('../public/pattern-1.svg') repeat;
-  animation: diagonalMove 30s linear infinite;
+  animation: diagonalMove 45s linear infinite;
   width: 100vw;
   height: 100vh;
 }
@@ -36,8 +36,11 @@ h1{
   0% {
     background-position: 0% 0%;
   }
+  50%{
+    background-position: 100% 100%;
+  }
   100% {
-    background-position: 100% 0%;
+    background-position: 0% 0%;
   }
 }
 
