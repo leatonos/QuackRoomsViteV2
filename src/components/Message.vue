@@ -6,7 +6,7 @@
       <DuckPortrait :color="color"/>
     </div>
     <div class="message-text">
-      <h4>{{ user }} says:</h4>
+      <h4>{{ user }}:</h4>
       <p>{{ message }}</p>
     </div>
   </div>
@@ -54,11 +54,30 @@ export default defineComponent({
         padding: 5px 15px;
     }
 
+
     .message-duck-image{
-      
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: start;
+      }
+    
+
+
+    @media only screen and (max-width: 599px) {
+
+      h4,p{
+        margin: 0;
+        padding: 0;
+      }
+
+      .message-duck-image{
+        width: 50px;
+      }
+
+      .message-text{
+
+      }
     }
 
-    .message-text{
-
-    }
 </style>

@@ -438,11 +438,16 @@ h2 {
   .message_log-container{
     padding: 0px 15px;
     width: calc(100% - 30px);
-    height: calc(100vh - 185px);
+    height: calc(100vh - 245px);
   }
 
   .message_sender-container{
-    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 30px;
+    padding: 5px 0px;
   }
 
   .side_alerts-container{
@@ -457,5 +462,10 @@ h2 {
     height: 35px;
   }
   
+  .message-input{
+    border-radius: 30px;
+    width: 80% !important;
+    margin: 0px 5px;
+  }
   
 }
