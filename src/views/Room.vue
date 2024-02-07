@@ -58,8 +58,11 @@
     <div class="message_sender-container">
         <form class="message_form" action="">
           <input class="message-input" type="text" ref="messageInput" />
-          <button class="message-btn" @click="sendQuack" type="button">
+          <button v-if="quackPermisson" class="message-btn" @click="sendQuack" type="button">
             <img src="../../public/quack-01.svg" />
+          </button>
+          <button v-else class="message-btn" type="button">
+            <h2>{{ quackTimeOutTime }}</h2>
           </button>
           <button class="message-btn" @click="sendMessage" type="submit">
             <img src="../../public/message.svg" />
@@ -97,7 +100,10 @@ import router from '../router';
           duckList:[] as Duck[],
           roomStatus: "Connecting to server..." as string,
           passwordRequired: false as boolean,
-          password: '' as string
+          password: '' as string,
+          quackTimeOutTime: 0,
+          quackPermisson: true,
+          quackCount:0
         };
     },
     created() {
@@ -249,6 +255,20 @@ import router from '../router';
         inputMessage.value = ''
       },
       sendQuack(){
+
+        this.quackCount++
+
+        if(this.quackCount > 3){
+          return
+        }
+
+        if(this.quackCount >= 3){
+          this.quackPermisson = false
+          this.quackTimeOutTime = 10
+          this.startQuackTimeout()
+        }
+
+
         const messageInfo = {
           action_type:"QuackToRoom",
           room_id:this.routeId,
@@ -273,8 +293,8 @@ import router from '../router';
         const sound = new Howl({
           src: ['/quack-sound-1.mp3'] // Replace with the path to your sound file
         });
-        
-        sound.play(); // Play the sound
+   
+          sound.play(); // Play the sound
       },
       updateDuck(){
         //Send this information to mongoDB
@@ -300,6 +320,17 @@ import router from '../router';
       },
       goBack(){
         router.push('/')
+      },
+      startQuackTimeout() {
+      const interval = setInterval(() => {
+        if (this.quackTimeOutTime > 1) {
+          this.quackTimeOutTime--;
+        } else {
+          clearInterval(interval); // Stop the interval when counter reaches 0
+          this.quackCount = 0
+          this.quackPermisson = true
+        }
+      }, 1000); // Run every second (1000 milliseconds)
       },
       closeWebSocket() {
       // Close the WebSocket connection before leaving the page
